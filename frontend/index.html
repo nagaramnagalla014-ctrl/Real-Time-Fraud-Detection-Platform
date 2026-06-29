@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FraudShield — Real-Time Fraud Detection Platform</title>
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+<div class="demo-banner"><i class="fas fa-flask"></i> UI Demo — backend requires local Docker setup (Kafka + Redis + Cassandra + Elasticsearch)</div>
+
+<nav class="navbar">
+  <div class="nav-brand"><i class="fas fa-shield-halved"></i> FraudShield</div>
+  <div class="nav-links">
+    <a href="#" class="nav-link active" onclick="showTab('dashboard')">Dashboard</a>
+    <a href="#" class="nav-link" onclick="showTab('transactions')">Transactions</a>
+    <a href="#" class="nav-link" onclick="showTab('alerts')">Alerts</a>
+    <a href="#" class="nav-link" onclick="showTab('rules')">Rules</a>
+  </div>
+  <div class="nav-status"><span class="status-dot"></span> Live Stream Active</div>
+</nav>
+
+<main class="main-content">
+  <!-- DASHBOARD TAB -->
+  <div id="tab-dashboard" class="tab active">
+    <div class="page-header"><h1>Fraud Detection Dashboard</h1><span class="badge-live">REAL-TIME</span></div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon blue"><i class="fas fa-arrow-right-arrow-left"></i></div>
+        <div class="stat-info"><div class="stat-value" id="totalTxns">1,247,832</div><div class="stat-label">Total Transactions</div></div>
+        <div class="stat-trend up"><i class="fas fa-arrow-up"></i> 8.3% today</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon red"><i class="fas fa-ban"></i></div>
+        <div class="stat-info"><div class="stat-value">3,421</div><div class="stat-label">Blocked</div></div>
+        <div class="stat-trend down"><i class="fas fa-arrow-down"></i> 0.27% rate</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon yellow"><i class="fas fa-triangle-exclamation"></i></div>
+        <div class="stat-info"><div class="stat-value">18,203</div><div class="stat-label">Flagged</div></div>
+        <div class="stat-trend neutral">1.46% rate</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon green"><i class="fas fa-chart-line"></i></div>
+        <div class="stat-info"><div class="stat-value">99.7%</div><div class="stat-label">Detection Accuracy</div></div>
+        <div class="stat-trend up"><i class="fas fa-arrow-up"></i> SLA met</div>
+      </div>
+    </div>
+
+    <div class="section-grid">
+      <div class="card">
+        <div class="card-header"><h2>Live Transaction Feed</h2>
+          <div class="filter-btns">
+            <button class="fbtn active" onclick="filterTxns('all',this)">All</button>
+            <button class="fbtn" onclick="filterTxns('BLOCKED',this)">Blocked</button>
+            <button class="fbtn" onclick="filterTxns('FLAGGED',this)">Flagged</button>
+            <button class="fbtn" onclick="filterTxns('PASSED',this)">Passed</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table id="txnTable">
+            <thead><tr><th>Transaction ID</th><th>Amount</th><th>Customer</th><th>Merchant</th><th>Score</th><th>Status</th><th>Time</th></tr></thead>
+            <tbody id="txnBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h2>Top Rules Triggered</h2></div>
+        <div id="rulesChart"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRANSACTIONS TAB -->
+  <div id="tab-transactions" class="tab">
+    <div class="page-header"><h1>Transaction Analysis</h1></div>
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>Amount</th><th>Card</th><th>IP</th><th>Merchant</th><th>Score</th><th>Status</th><th>Processing</th></tr></thead>
+          <tbody id="fullTxnBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALERTS TAB -->
+  <div id="tab-alerts" class="tab">
+    <div class="page-header"><h1>Fraud Alerts</h1><span class="badge-count" id="openAlertsCount">6 Open</span></div>
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Alert ID</th><th>Transaction</th><th>Rule</th><th>Score</th><th>Status</th><th>Created</th><th>Action</th></tr></thead>
+          <tbody id="alertsBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES TAB -->
+  <div id="tab-rules" class="tab">
+    <div class="page-header"><h1>Fraud Rules Engine</h1></div>
+    <div class="rules-grid" id="rulesGrid"></div>
+  </div>
+</main>
+
+<script src="js/app.js"></script>
+</body>
+</html>
